@@ -1,0 +1,486 @@
+# PV-012 — Artificial Intelligence (AI) System Specification
+
+**Project:** Project Velir
+**Version:** 1.0
+**Status:** Draft
+**Owner:** Game Director
+
+**Related Documents**
+
+* PV-002 Master Game Specification
+* PV-005 Gameplay Systems
+* PV-007 Kingdom System Specification
+* PV-009 Battle System Specification
+* PV-010 Economy System Specification
+* PV-011 Event System Specification
+
+**Last Updated:** June 2026
+
+---
+
+# 1. Purpose
+
+The Artificial Intelligence (AI) System controls all non-human kingdoms during single-player gameplay.
+
+The AI should feel like intelligent rival rulers rather than predictable scripted opponents.
+
+Players should respect AI decisions because they are logical, strategic, and consistent with each kingdom's identity.
+
+---
+
+# 2. Design Philosophy
+
+Project Velir AI follows five core principles.
+
+### Fair
+
+The AI never cheats.
+
+It follows exactly the same rules as the player.
+
+---
+
+### Strategic
+
+The AI evaluates multiple possible actions before acting.
+
+---
+
+### Understandable
+
+Players should usually understand *why* the AI made a decision.
+
+---
+
+### Adaptive
+
+The AI reacts to changing board conditions.
+
+---
+
+### Distinct
+
+Each kingdom behaves differently based on its historical identity.
+
+---
+
+# 3. AI Responsibilities
+
+The AI is responsible for:
+
+* Rolling Dice
+* Choosing movement strategy
+* Spending Gold
+* Recruiting Army
+* Entering Velir Aram
+* Managing resources
+* Evaluating battles
+* Pursuing Prestige
+* Responding to events
+
+The AI controls every aspect of a non-human kingdom.
+
+---
+
+# 4. AI Decision Flow
+
+```text
+Start Turn
+      ↓
+Evaluate Current State
+      ↓
+Determine Objectives
+      ↓
+Evaluate Available Actions
+      ↓
+Choose Highest Priority Action
+      ↓
+Execute Action
+      ↓
+Update Internal Strategy
+      ↓
+End Turn
+```
+
+The AI performs one complete evaluation every turn.
+
+---
+
+# 5. AI Personalities
+
+Each kingdom follows its own strategic philosophy.
+
+## Chola
+
+Priority
+
+Expansion
+
+Behavior
+
+* Aggressive
+* Takes calculated risks
+* Prioritizes Battles
+* Values Trade Routes
+
+---
+
+## Chera
+
+Priority
+
+Economy
+
+Behavior
+
+* Collects Gold
+* Avoids unnecessary battles
+* Prefers Trade
+* Stable growth
+
+---
+
+## Pandya
+
+Priority
+
+Prestige
+
+Behavior
+
+* Prioritizes Temples
+* Pursues Ancient Sites
+* Balances economy and military
+
+---
+
+## Pallava
+
+Priority
+
+Defense
+
+Behavior
+
+* Recruits frequently
+* Defends strategic locations
+* Rarely attacks without advantage
+
+---
+
+# 6. Decision Priorities
+
+Each turn the AI evaluates:
+
+1. Current Prestige
+2. Gold
+3. Army
+4. Influence
+5. Opponent Strength
+6. Nearby Opportunities
+7. Velir Aram Access
+8. Event Risks
+
+The highest-value objective becomes the current strategy.
+
+---
+
+# 7. Decision Weights
+
+Every possible action receives a score.
+
+Example
+
+| Action            | Score |
+| ----------------- | ----: |
+| Recruit Army      |    85 |
+| Enter Velir Aram  |    70 |
+| Save Gold         |    65 |
+| Trigger Battle    |    55 |
+| Risky Exploration |    40 |
+
+The AI selects the highest-scoring action.
+
+These values remain configurable.
+
+---
+
+# 8. Battle Evaluation
+
+Before entering combat, the AI estimates:
+
+* Own Army
+* Enemy Army
+* Commander Bonuses
+* Passive Abilities
+* Potential Rewards
+* Potential Losses
+
+The AI avoids battles with poor expected outcomes unless necessary.
+
+---
+
+# 9. Resource Management
+
+The AI manages resources conservatively.
+
+Goals include:
+
+* Avoid zero Gold.
+* Maintain military strength.
+* Prepare for future opportunities.
+* Preserve Prestige lead.
+
+The AI should rarely spend every available resource.
+
+---
+
+# 10. Velir Aram Strategy
+
+The AI evaluates whether entering Velir Aram is worthwhile.
+
+Factors include:
+
+* Remaining Prestige needed
+* Current Army
+* Available Gold
+* Ancient Site ownership
+* Opponent position
+
+Late-game AI should become increasingly interested in Velir Aram.
+
+---
+
+# 11. Event Adaptation
+
+After resolving an event, the AI immediately reassesses its priorities.
+
+Example:
+
+Large Gold gain
+
+↓
+
+Recruit Army
+
+↓
+
+Increase military strategy
+
+The AI continuously adapts rather than following a fixed plan.
+
+---
+
+# 12. Difficulty Levels
+
+## Easy
+
+Characteristics
+
+* Conservative decisions
+* Slower expansion
+* Less efficient economy
+
+Designed for beginners.
+
+---
+
+## Normal
+
+Balanced AI.
+
+Recommended default difficulty.
+
+Uses all gameplay systems effectively.
+
+---
+
+## Hard
+
+Characteristics
+
+* Better resource management
+* Smarter battle evaluation
+* Improved long-term planning
+
+The AI still follows identical game rules.
+
+No cheating is permitted.
+
+---
+
+# 13. AI Knowledge
+
+The AI knows only publicly available information.
+
+Visible information includes:
+
+* Player resources
+* Board positions
+* Ancient Site ownership
+* Current events
+
+The AI never accesses hidden future information.
+
+---
+
+# 14. Runtime Data
+
+AIManager maintains:
+
+* Personality
+* Current Goal
+* Current Priority
+* Decision Score
+* Previous Actions
+* Threat Assessment
+
+This state updates every turn.
+
+---
+
+# 15. Data Resources
+
+## AIPersonalityData
+
+Stores:
+
+* Personality Name
+* Preferred Strategy
+* Decision Weights
+* Risk Tolerance
+* Aggression Level
+
+---
+
+## AIDifficultyData
+
+Stores:
+
+* Difficulty Name
+* Evaluation Depth
+* Planning Horizon
+* Decision Modifiers
+
+All AI behavior should be configurable through Resources.
+
+---
+
+# 16. Signals
+
+AIManager exposes:
+
+* ai_turn_started
+* ai_action_selected
+* ai_action_completed
+* ai_strategy_changed
+* ai_turn_finished
+
+These signals coordinate AI with TurnManager and UI.
+
+---
+
+# 17. Edge Cases
+
+The AI must correctly handle:
+
+* Low resources.
+* No valid actions.
+* Immediate victory opportunities.
+* Simultaneous event triggers.
+* Save/load during AI turns.
+* Interrupted animations.
+
+All decisions must remain deterministic.
+
+---
+
+# 18. Performance Requirements
+
+AI Evaluation
+
+< 100 ms
+
+Action Selection
+
+< 50 ms
+
+Entire AI Turn
+
+< 5 seconds
+
+Target Frame Rate
+
+60 FPS
+
+Players should never feel that the AI is "thinking" for too long.
+
+---
+
+# 19. Testing Checklist
+
+The following tests must pass:
+
+* AI completes turns.
+* AI recruits appropriately.
+* AI enters Velir Aram strategically.
+* AI evaluates battles correctly.
+* AI responds to events.
+* AI saves and loads correctly.
+* AI respects kingdom personalities.
+* AI never cheats.
+
+---
+
+# 20. Codex Implementation Notes
+
+Create a dedicated **AIManager**.
+
+Responsibilities:
+
+* Evaluate board state.
+* Score possible actions.
+* Execute selected actions.
+* Maintain AI personality.
+* Update strategic goals.
+
+Use a utility-based decision system instead of hardcoded behavior trees.
+
+All AI tuning should be controlled through configuration resources rather than code.
+
+---
+
+# 21. Future Expansion
+
+Future AI features may include:
+
+* Diplomacy
+* Alliances
+* Betrayal
+* Learning AI
+* Personality evolution
+* Adaptive difficulty
+* Multiplayer AI replacement
+* Campaign-specific behaviors
+* Historical ruler profiles
+* Seasonal strategies
+
+The AI architecture should remain modular so new decision systems can be added without replacing existing logic.
+
+---
+
+# 22. Design Principle
+
+The AI should feel like another ruler sitting across the royal council table.
+
+Players should respect clever decisions, anticipate rival strategies, and celebrate victories earned through superior planning.
+
+The AI should never feel unfair—only intelligent.
+
+---
+
+**Document ID:** PV-012
+
+**Version:** 1.0
+
+**Status:** Complete
