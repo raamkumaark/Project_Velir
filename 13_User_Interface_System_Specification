@@ -1,0 +1,498 @@
+# PV-013 — User Interface (UI) System Specification
+
+**Project:** Project Velir
+**Version:** 1.0
+**Status:** Draft
+**Owner:** Game Director
+
+**Related Documents**
+
+* PV-002 Master Game Specification
+* PV-004 Core Gameplay Loop
+* PV-005 Gameplay Systems
+* PV-006 Board System Specification
+* PV-007 Kingdom System Specification
+
+**Last Updated:** June 2026
+
+---
+
+# 1. Purpose
+
+The User Interface (UI) System provides players with all gameplay information while keeping the game board as the primary focus.
+
+The UI must communicate game state clearly, minimize distractions, and enable one-handed gameplay on portrait-oriented Android devices.
+
+The UI should never force players to search for important information.
+
+---
+
+# 2. Design Philosophy
+
+Project Velir's UI follows five principles.
+
+### Clarity
+
+Important information should always be visible.
+
+---
+
+### Simplicity
+
+Avoid unnecessary windows and clutter.
+
+---
+
+### Consistency
+
+Buttons, icons, colors, and layouts should behave consistently throughout the game.
+
+---
+
+### Responsiveness
+
+Every player action should receive immediate visual feedback.
+
+---
+
+### Mobile First
+
+Every interface should be designed specifically for portrait smartphones.
+
+---
+
+# 3. UI Architecture
+
+The UI consists of independent modules.
+
+```text id="ui_architecture"
+Main UI
+
+↓
+
+Top HUD
+
+↓
+
+Game Board
+
+↓
+
+Bottom Action Panel
+
+↓
+
+Popup Layer
+
+↓
+
+Overlay Layer
+```
+
+Each module is responsible for one area of the screen.
+
+---
+
+# 4. Main Gameplay Layout
+
+```text id="gameplay_ui"
+────────────────────────────
+
+Round 5 • Chola Turn
+
+────────────────────────────
+
+Gold   Army   Influence   Prestige
+
+────────────────────────────
+
+        GAME BOARD
+
+────────────────────────────
+
+Tile Information
+
+────────────────────────────
+
+ROLL
+
+MENU
+
+────────────────────────────
+```
+
+The board occupies approximately 65% of the screen.
+
+---
+
+# 5. Top HUD
+
+Displays permanent match information.
+
+Contents:
+
+* Active Kingdom
+* Round Number
+* Turn Number
+* Kingdom Banner
+* Active Player Indicator
+
+This area remains visible during gameplay.
+
+---
+
+# 6. Resource Panel
+
+Displays the four primary resources.
+
+| Resource  | Icon  | Color  |
+| --------- | ----- | ------ |
+| Gold      | Coin  | Gold   |
+| Army      | Sword | Red    |
+| Influence | Lotus | Purple |
+| Prestige  | Crown | Blue   |
+
+Values update immediately after every change.
+
+---
+
+# 7. Bottom Action Panel
+
+Contains player actions.
+
+Version 1 buttons:
+
+* Roll Dice
+* End Turn
+* Menu
+
+Future buttons:
+
+* Recruit
+* Trade
+* Diplomacy
+* Kingdom
+* Inventory
+
+Buttons enable and disable automatically depending on game state.
+
+---
+
+# 8. Tile Information Panel
+
+When a tile is selected or landed upon, the panel displays:
+
+* Tile Name
+* Tile Type
+* Description
+* Reward
+* Penalty
+* Current Owner (if applicable)
+
+The panel automatically closes after movement completes.
+
+---
+
+# 9. Popup Windows
+
+Temporary popups include:
+
+* Event Cards
+* Battle Results
+* Ancient Discoveries
+* Rewards
+* Confirmation Dialogs
+
+Popups should interrupt gameplay only when necessary.
+
+---
+
+# 10. Kingdom Information Screen
+
+Displays:
+
+* Kingdom Banner
+* Commander
+* Passive Ability
+* Current Resources
+* Statistics
+* Controlled Ancient Sites
+
+Accessible from the Pause Menu.
+
+---
+
+# 11. Pause Menu
+
+Contains:
+
+* Resume
+* Save Game
+* Load Game
+* Settings
+* Restart Match
+* Exit to Main Menu
+
+Gameplay pauses immediately when opened.
+
+---
+
+# 12. Victory Screen
+
+Displays:
+
+* Winning Kingdom
+* Final Prestige
+* Match Duration
+* Resources
+* Battle Statistics
+* Ancient Discoveries
+* Play Again Button
+* Main Menu Button
+
+Victory should feel rewarding.
+
+---
+
+# 13. Statistics Screen
+
+Displays:
+
+* Total Turns
+* Battles Won
+* Battles Lost
+* Gold Earned
+* Army Recruited
+* Influence Gained
+* Prestige Earned
+* Ancient Sites Controlled
+
+Statistics encourage replayability.
+
+---
+
+# 14. Visual Style
+
+UI should resemble:
+
+* Stone carvings
+* Bronze ornaments
+* Palm-leaf manuscripts
+* Temple engravings
+
+Avoid modern flat-design aesthetics.
+
+The interface should feel handcrafted.
+
+---
+
+# 15. Color System
+
+Primary Colors
+
+| Purpose    | Color      |
+| ---------- | ---------- |
+| Background | Sandstone  |
+| Primary UI | Bronze     |
+| Accent     | Royal Gold |
+| Positive   | Green      |
+| Negative   | Crimson    |
+| Neutral    | Granite    |
+
+Kingdom colors override accent colors where appropriate.
+
+---
+
+# 16. Typography
+
+Primary Font
+
+Historical-inspired serif font.
+
+Fallback
+
+Readable sans-serif.
+
+Requirements:
+
+* Large text
+* High contrast
+* Excellent readability
+
+No decorative fonts during gameplay.
+
+---
+
+# 17. Icons
+
+Every gameplay element has a dedicated icon.
+
+Examples:
+
+* Gold Coin
+* Sword
+* Crown
+* Temple
+* Harbor
+* Scroll
+* Shield
+* Dice
+
+Icons should remain recognizable even at small sizes.
+
+---
+
+# 18. Animations
+
+UI animations should remain subtle.
+
+Examples:
+
+* Button Press
+* Resource Increase
+* Dice Roll
+* Popup Fade
+* Victory Banner
+
+Target animation duration:
+
+200–500 ms
+
+Players should never wait for UI animations.
+
+---
+
+# 19. Accessibility
+
+Version 1 includes:
+
+* Large touch targets
+* Color-blind friendly palette
+* Adjustable text size
+* High contrast icons
+
+Future versions may add:
+
+* Screen reader support
+* Reduced motion mode
+* Haptic customization
+
+---
+
+# 20. Runtime UI State
+
+UIManager maintains:
+
+* Active Screen
+* Active Popup
+* Current HUD
+* Selected Tile
+* Animation Queue
+
+Only one modal popup may exist at a time.
+
+---
+
+# 21. Signals
+
+UIManager exposes:
+
+* screen_opened
+* screen_closed
+* popup_opened
+* popup_closed
+* hud_updated
+* button_pressed
+
+Gameplay systems subscribe through signals rather than directly manipulating UI elements.
+
+---
+
+# 22. Performance Requirements
+
+UI Loading
+
+< 500 ms
+
+HUD Update
+
+< 16 ms
+
+Popup Animation
+
+< 500 ms
+
+Target Frame Rate
+
+60 FPS
+
+---
+
+# 23. Testing Checklist
+
+The following tests must pass:
+
+* HUD updates correctly.
+* Resource values refresh immediately.
+* Popups display correctly.
+* Pause Menu functions.
+* Victory Screen displays statistics.
+* Buttons enable and disable correctly.
+* UI scales across supported devices.
+* Save/load restores UI state.
+
+---
+
+# 24. Codex Implementation Notes
+
+Create a dedicated **UIManager**.
+
+Responsibilities:
+
+* Manage HUD.
+* Manage popups.
+* Switch screens.
+* Update resources.
+* Display notifications.
+
+Individual UI scenes should remain independent.
+
+Avoid direct communication between gameplay systems and UI elements.
+
+All interactions should occur through signals.
+
+---
+
+# 25. Future Expansion
+
+Future UI improvements may include:
+
+* Animated kingdom banners
+* Interactive tutorials
+* Mini-map
+* Gesture navigation
+* Theme switching
+* Dynamic backgrounds
+* Seasonal UI themes
+* Tablet-optimized layouts
+* Foldable device support
+
+The UI architecture should support these additions without redesigning the existing interface.
+
+---
+
+# 26. Design Principle
+
+The User Interface should become almost invisible.
+
+Players should spend their attention making strategic decisions—not searching menus or interpreting confusing screens.
+
+Every button, panel, and popup should communicate information quickly, elegantly, and consistently.
+
+---
+
+**Document ID:** PV-013
+
+**Version:** 1.0
+
+**Status:** Complete
