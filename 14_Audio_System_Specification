@@ -1,0 +1,483 @@
+# PV-014 — Audio System Specification
+
+**Project:** Project Velir
+**Version:** 1.0
+**Status:** Draft
+**Owner:** Game Director
+
+**Related Documents**
+
+* PV-002 Master Game Specification
+* PV-004 Core Gameplay Loop
+* PV-009 Battle System Specification
+* PV-011 Event System Specification
+* PV-013 UI System Specification
+
+**Last Updated:** June 2026
+
+---
+
+# 1. Purpose
+
+The Audio System creates emotional immersion while supporting gameplay clarity.
+
+Audio should reinforce player actions, communicate important events, and evoke the atmosphere of ancient Tamilakam without becoming repetitive or distracting.
+
+The soundtrack should make players feel as though they are participating in a royal council, commanding armies, and exploring forgotten civilizations.
+
+---
+
+# 2. Design Philosophy
+
+Project Velir's audio follows five guiding principles.
+
+### Informative
+
+Sound should communicate gameplay information.
+
+---
+
+### Immersive
+
+Music and ambience should transport players into the world of ancient Tamilakam.
+
+---
+
+### Responsive
+
+Every important action should receive immediate audio feedback.
+
+---
+
+### Unobtrusive
+
+Music should support concentration during strategic gameplay.
+
+---
+
+### Culturally Inspired
+
+Instrumentation and composition should draw inspiration from South Indian musical traditions rather than generic fantasy music.
+
+---
+
+# 3. Audio Architecture
+
+```text id="audio_architecture"
+Master Audio
+
+↓
+
+Music Bus
+
+↓
+
+Ambient Bus
+
+↓
+
+SFX Bus
+
+↓
+
+UI Bus
+
+↓
+
+Voice Bus (Future)
+```
+
+Each category should have its own audio bus with independent volume control.
+
+---
+
+# 4. Audio Categories
+
+The Audio System consists of:
+
+* Background Music
+* Ambient Audio
+* Gameplay Sound Effects
+* UI Sounds
+* Notification Sounds
+* Voice Narration (Future)
+
+Each category serves a distinct gameplay purpose.
+
+---
+
+# 5. Background Music
+
+Music should dynamically reinforce the current game state.
+
+Version 1 includes:
+
+| Track            | Usage               |
+| ---------------- | ------------------- |
+| Main Theme       | Main Menu           |
+| Kingdom Theme    | Gameplay            |
+| Battle Theme     | Battles             |
+| Velir Aram Theme | Ancient Exploration |
+| Victory Theme    | Match End           |
+
+Music should loop seamlessly.
+
+---
+
+# 6. Ambient Audio
+
+Ambient sounds enhance immersion.
+
+Examples:
+
+* Wind
+* Birds
+* Flowing Water
+* Marketplace Activity
+* Temple Bells
+* Ocean Waves
+* Crackling Fire
+
+Ambient sounds should remain subtle.
+
+---
+
+# 7. Gameplay Sound Effects
+
+Every important gameplay action should produce feedback.
+
+Examples:
+
+### Dice
+
+* Roll
+* Bounce
+* Final Result
+
+---
+
+### Movement
+
+* Token Movement
+* Tile Landing
+
+---
+
+### Resource Changes
+
+* Gold Gain
+* Gold Loss
+* Army Recruitment
+* Prestige Gain
+* Influence Gain
+
+---
+
+### Battle
+
+* Sword Clash
+* Victory
+* Defeat
+* Commander Arrival
+
+---
+
+### Events
+
+* Scroll Opening
+* Ancient Discovery
+* Treasure Found
+* Warning
+
+Players should recognize events through sound alone.
+
+---
+
+# 8. User Interface Sounds
+
+UI interactions include:
+
+* Button Press
+* Button Hover (Desktop Future)
+* Popup Open
+* Popup Close
+* Notification
+* Menu Navigation
+
+UI sounds should remain short and subtle.
+
+---
+
+# 9. Kingdom Audio Identity
+
+Each kingdom receives a recognizable musical identity.
+
+### Chola
+
+* War drums
+* Conch
+* Large percussion
+
+---
+
+### Chera
+
+* Flute
+* Soft percussion
+* Ocean ambience
+
+---
+
+### Pandya
+
+* Temple bells
+* Veena
+* Sacred ambience
+
+---
+
+### Pallava
+
+* Stone carving ambience
+* Mridangam
+* Calm strings
+
+These motifs strengthen kingdom identity.
+
+---
+
+# 10. Velir Aram Audio
+
+Velir Aram uses a distinct atmosphere.
+
+Examples:
+
+* Deep echoes
+* Ancient wind
+* Water droplets
+* Low percussion
+* Whispering ambience
+
+The player should immediately recognize entry into Velir Aram.
+
+---
+
+# 11. Music Transitions
+
+Music changes smoothly during:
+
+* Battle Start
+* Battle End
+* Velir Aram Entry
+* Victory
+* Main Menu
+
+Transitions should use crossfading rather than abrupt stops.
+
+---
+
+# 12. Runtime Audio State
+
+AudioManager tracks:
+
+* Current Track
+* Current Ambient Layer
+* Active SFX
+* Audio Bus Levels
+* Transition State
+
+Only one background track plays at any time.
+
+---
+
+# 13. Audio Resources
+
+## MusicData
+
+Stores:
+
+* Track Name
+* Audio File
+* Loop Point
+* Volume
+* Category
+
+---
+
+## SoundEffectData
+
+Stores:
+
+* Effect Name
+* Audio File
+* Pitch Range
+* Volume
+* Category
+
+---
+
+## AmbientData
+
+Stores:
+
+* Ambient Name
+* Loop
+* Volume
+* Environment
+
+All audio assets should be loaded through Resources.
+
+---
+
+# 14. Audio Mixing
+
+Recommended default mix:
+
+| Bus     | Volume |
+| ------- | ------ |
+| Master  | 100%   |
+| Music   | 70%    |
+| Ambient | 50%    |
+| SFX     | 90%    |
+| UI      | 80%    |
+
+Players can adjust every bus independently.
+
+---
+
+# 15. Signals
+
+AudioManager exposes:
+
+* music_started
+* music_changed
+* sfx_played
+* ambience_changed
+* audio_muted
+
+Gameplay systems should trigger sounds through signals.
+
+---
+
+# 16. Performance Requirements
+
+Audio Latency
+
+< 50 ms
+
+Music Transition
+
+< 500 ms
+
+Maximum Simultaneous SFX
+
+16
+
+Target Frame Rate
+
+60 FPS
+
+Audio should never affect gameplay performance.
+
+---
+
+# 17. Accessibility
+
+Version 1 includes:
+
+* Independent volume sliders
+* Mute option
+* Subtitle support (Future)
+* Audio test button
+
+Future updates may include:
+
+* Mono Audio
+* Hearing Accessibility Mode
+* Enhanced notification sounds
+
+---
+
+# 18. Edge Cases
+
+The Audio System must correctly handle:
+
+* Rapid button presses.
+* Simultaneous battles.
+* Save/load during music transitions.
+* Device mute state.
+* Audio interruption from phone calls.
+* Application pause and resume.
+
+Playback should recover gracefully.
+
+---
+
+# 19. Testing Checklist
+
+The following tests must pass:
+
+* Music loops correctly.
+* Battle music transitions smoothly.
+* Resource sounds trigger.
+* UI sounds play correctly.
+* Volume settings save.
+* Audio resumes after pause.
+* Muting functions correctly.
+* Multiple SFX mix without distortion.
+
+---
+
+# 20. Codex Implementation Notes
+
+Create a dedicated **AudioManager**.
+
+Responsibilities:
+
+* Play background music.
+* Trigger sound effects.
+* Manage ambient layers.
+* Handle audio transitions.
+* Save player audio preferences.
+
+Use Godot Audio Buses.
+
+Avoid directly calling AudioStreamPlayer nodes from gameplay systems.
+
+All requests should pass through AudioManager.
+
+---
+
+# 21. Future Expansion
+
+Future audio features may include:
+
+* Dynamic adaptive music
+* Voice narration
+* Commander voice lines
+* Festival music
+* Seasonal ambience
+* Positional audio
+* Regional soundscapes
+* Multiplayer voice chat
+* Accessibility narration
+
+The Audio System should support these additions without changing the existing architecture.
+
+---
+
+# 22. Design Principle
+
+Sound should become part of the player's strategic intuition.
+
+Without looking at the screen, players should recognize important events through carefully designed audio cues.
+
+The soundtrack should celebrate the richness of ancient Tamil culture while supporting focused strategic gameplay.
+
+---
+
+**Document ID:** PV-014
+
+**Version:** 1.0
+
+**Status:** Complete
